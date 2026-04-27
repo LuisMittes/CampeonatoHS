@@ -389,9 +389,8 @@ footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:
 
 <script>
 // ── CONFIGURAÇÃO ──────────────────────────────────────────────
-// ID da planilha publicada
-const SHEET_ID = '2PACX-1vSMq92c4hL3OSPX1fgNrr8L2_64_lEtt9XT2w50Sqizy-s4zjsGp4QPK935e8Edz1df4ucacxYvwHZl';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`;
+// Google Apps Script — sem bloqueio CORS
+const CSV_URL = 'https://script.google.com/macros/s/AKfycbzMsUVqelhqvNDA3hWQQbvH-ov6tLjvqJS7gVOYhLf1Q0r_qgtpQM5_9uq3k-7v3lcefA/exec';
 
 // Turmas e categorias disponíveis
 const TURMAS = {
@@ -465,25 +464,11 @@ async function fetchData() {
   btn.classList.add('spinning');
 
   try {
-    // Busca o CSV direto — funciona quando o site está no GitHub Pages
-    // pois o Google permite requisições de origens de outros domínios para planilhas publicadas
-    const proxies = [
-      CSV_URL,
-      'https://corsproxy.io/?' + encodeURIComponent(CSV_URL),
-      'https://api.allorigins.win/raw?url=' + encodeURIComponent(CSV_URL),
-    ];
-    let text = null;
-    for (const url of proxies) {
-      try {
-        const res = await fetch(url, { cache: 'no-cache' });
-        if (res.ok) {
-          const t = await res.text();
-          // Garante que é um CSV válido (tem vírgula na primeira linha)
-          if (t.includes(',')) { text = t; break; }
-        }
-      } catch(e) { continue; }
-    }
-    if (!text) throw new Error('Não foi possível carregar');
+    // Apps Script já tem CORS liberado — busca direto
+    const res = await fetch(CSV_URL, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    let text = await res.text();
+    if (!text || !text.includes(',')) throw new Error('CSV inválido');
     const rows = parseCSV(text);
     allDados = buildDados(rows);
 
