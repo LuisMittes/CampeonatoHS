@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HS Futevôlei — Classificação</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Nunito:wght@400;600;700;900&display=swap');
+
+:root {
+  --areia: #f2d98a;
+  --ceu: #1a6faf;
+  --ceu-escuro: #0d4a7a;
+  --texto-escuro: #1a120a;
+  --masc: #1a6faf;
+  --misto: #c0407a;
+  --fem: #2da85a;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+  background:#1a6faf;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:linear-gradient(180deg,
+    #1a6faf 0%,#2589cc 35%,#4ca3d8 55%,
+    #e8c96b 70%,#d4a843 80%,#c49030 100%);
+  z-index:0;
+}
+
+.waves { position:fixed; bottom:0; left:0; width:100%; z-index:1; pointer-events:none; }
+.wave  { position:absolute; bottom:0; left:-200px; width:calc(100% + 400px); height:80px; border-radius:50%; opacity:.13; }
+.wave1 { background:#fff; animation:wave1 7s linear infinite; bottom:10px; }
+.wave2 { background:#a8d8f0; animation:wave2 11s linear infinite; height:60px; }
+@keyframes wave1 { 0%,100%{transform:translateX(0) scaleY(1)} 50%{transform:translateX(120px) scaleY(1.1)} }
+@keyframes wave2 { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-100px)} }
+
+.sun {
+  position:fixed; top:24px; right:44px;
+  width:68px; height:68px; border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,#ffe066,#f5a623 60%,#c97b10);
+  box-shadow:0 0 0 12px rgba(245,166,35,.18),0 0 0 28px rgba(245,166,35,.07);
+  z-index:2; animation:sun-pulse 4s ease-in-out infinite;
+}
+@keyframes sun-pulse {
+  0%,100%{box-shadow:0 0 0 12px rgba(245,166,35,.18),0 0 0 28px rgba(245,166,35,.07)}
+  50%    {box-shadow:0 0 0 18px rgba(245,166,35,.22),0 0 0 38px rgba(245,166,35,.10)}
+}
+
+.ball-deco {
+  position:fixed; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff 0%,#ddd 45%,#aaa 100%);
+  border:2.5px solid rgba(0,0,0,.1); z-index:2; pointer-events:none; overflow:hidden;
+}
+.ball-deco::before {
+  content:''; position:absolute; inset:0; border-radius:50%;
+  border:2px solid rgba(0,0,0,.1); border-right-color:transparent; transform:rotate(-30deg);
+}
+.ball1 { width:46px;height:46px; top:110px;left:28px; animation:float1 6s ease-in-out infinite; }
+.ball2 { width:30px;height:30px; top:195px;right:20px; animation:float2 9s ease-in-out infinite; }
+@keyframes float1 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-18px) rotate(22deg)} }
+@keyframes float2 { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-13px) rotate(-16deg)} }
+
+.fl { position:fixed; background:rgba(255,255,255,.045); pointer-events:none; z-index:1; }
+.fl1 { width:2px;height:55%;top:0;left:14%; }
+.fl2 { width:2px;height:55%;top:0;right:14%; }
+
+.container { position:relative; z-index:3; max-width:900px; margin:0 auto; padding:0 16px 80px; }
+
+/* HEADER */
+.header { text-align:center; padding:36px 0 22px; }
+.eyebrow {
+  display:inline-block; font-size:.7rem; font-weight:900;
+  letter-spacing:4px; text-transform:uppercase; color:var(--areia);
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+  padding:4px 18px; border-radius:100px; backdrop-filter:blur(4px); margin-bottom:10px;
+}
+.header h1 {
+  font-family:'Black Ops One',sans-serif;
+  font-size:clamp(2.4rem,8vw,4.6rem);
+  color:#fff; letter-spacing:3px; line-height:1;
+  text-shadow:0 4px 24px rgba(0,0,0,.35),0 2px 0 rgba(0,0,0,.2);
+}
+.header h1 span { color:var(--areia); }
+.header-sub { font-size:.8rem; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.55); margin-top:6px; }
+.regras-row { display:flex; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.rpill {
+  display:flex; align-items:center; gap:5px;
+  padding:5px 16px; font-size:.72rem; font-weight:800;
+  letter-spacing:1.5px; text-transform:uppercase;
+  color:var(--texto-escuro); background:var(--areia);
+  border-right:2px solid rgba(0,0,0,.1);
+}
+.rpill:first-child{border-radius:100px 0 0 100px;}
+.rpill:last-child {border-radius:0 100px 100px 0; border-right:none;}
+.rpill .v { color:var(--ceu-escuro); }
+
+.net-bar {
+  height:6px; margin:18px 0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.38) 0,rgba(255,255,255,.38) 6px,transparent 6px,transparent 14px);
+  border-top:2px solid rgba(255,255,255,.5); border-bottom:2px solid rgba(255,255,255,.5);
+}
+
+/* LOADING */
+.loading-wrap {
+  display:flex; flex-direction:column; align-items:center;
+  gap:14px; padding:60px 20px; color:rgba(255,255,255,.7);
+  font-family:'Black Ops One',sans-serif; letter-spacing:2px; font-size:.9rem;
+}
+.spinner {
+  width:44px; height:44px; border-radius:50%;
+  border:4px solid rgba(255,255,255,.2);
+  border-top-color:#fff;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.error-wrap {
+  background:rgba(255,80,80,.15); border:1.5px solid rgba(255,80,80,.4);
+  border-radius:14px; padding:20px 24px; text-align:center;
+  color:#fff; font-size:.88rem; line-height:1.7; margin-bottom:16px;
+}
+
+/* TURMA SELECTOR */
+.turma-selector { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+.turma-btn {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  padding:10px 20px; border-radius:14px;
+  border:2px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.1); backdrop-filter:blur(6px);
+  color:rgba(255,255,255,.65); font-family:'Nunito',sans-serif; font-weight:900;
+  cursor:pointer; transition:all .22s; text-align:center;
+}
+.turma-btn:hover { background:rgba(255,255,255,.22); color:#fff; border-color:rgba(255,255,255,.6); }
+.turma-btn.active { background:#fff; border-color:#fff; color:var(--ceu-escuro); box-shadow:0 4px 20px rgba(0,0,0,.25); }
+.turma-btn .t-dia  { font-size:.95rem; }
+.turma-btn .t-hora { font-size:.72rem; letter-spacing:2px; opacity:.7; }
+
+/* CAT SELECTOR */
+.cat-selector { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+.cat-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:8px 22px; border-radius:100px;
+  border:2px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.12); backdrop-filter:blur(4px);
+  color:rgba(255,255,255,.6);
+  font-family:'Black Ops One',sans-serif; font-size:.82rem; letter-spacing:2px;
+  cursor:pointer; transition:all .2s;
+}
+.cat-btn:hover { background:rgba(255,255,255,.22); color:#fff; }
+.cat-btn.active-masc  { background:var(--masc);  border-color:var(--masc);  color:#fff; box-shadow:0 4px 16px rgba(26,111,175,.45); }
+.cat-btn.active-misto { background:var(--misto); border-color:var(--misto); color:#fff; box-shadow:0 4px 16px rgba(192,64,122,.45); }
+.cat-btn.active-fem   { background:var(--fem);   border-color:var(--fem);   color:#fff; box-shadow:0 4px 16px rgba(45,168,90,.45); }
+
+/* CARD */
+.card {
+  background:rgba(255,253,245,.96); backdrop-filter:blur(12px);
+  border-radius:20px; overflow:hidden;
+  box-shadow:0 12px 48px rgba(0,0,0,.28),0 2px 0 rgba(255,255,255,.5) inset;
+  border:1px solid rgba(255,255,255,.6);
+}
+
+.cat-badge {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 20px; font-family:'Black Ops One',sans-serif;
+  font-size:.82rem; letter-spacing:2px;
+  border-bottom:2px solid rgba(0,0,0,.07);
+}
+.badge-dot { width:9px;height:9px;border-radius:50%;flex-shrink:0; }
+
+/* REFRESH BTN */
+.refresh-row {
+  display:flex; justify-content:flex-end; align-items:center;
+  padding:8px 16px; border-bottom:1px solid rgba(0,0,0,.06);
+  gap:10px;
+}
+.refresh-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:5px 14px; border-radius:100px;
+  border:1.5px solid rgba(0,0,0,.12); background:transparent;
+  font-family:'Nunito',sans-serif; font-size:.78rem; font-weight:700;
+  color:rgba(0,0,0,.45); cursor:pointer; transition:all .2s;
+}
+.refresh-btn:hover { border-color:var(--ceu); color:var(--ceu); }
+.refresh-btn.spinning svg { animation:spin .7s linear infinite; }
+.last-update { font-size:.72rem; color:rgba(0,0,0,.3); }
+
+/* TABLE */
+.table-scroll { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:.875rem; }
+thead th {
+  padding:10px 14px; text-align:center;
+  font-family:'Black Ops One',sans-serif; font-size:.72rem; letter-spacing:2px;
+  color:rgba(0,0,0,.32); background:rgba(0,0,0,.03);
+  border-bottom:1px solid rgba(0,0,0,.07); white-space:nowrap;
+}
+thead th:nth-child(2) { text-align:left; padding-left:20px; }
+tbody tr { border-bottom:1px solid rgba(0,0,0,.055); transition:background .14s; }
+tbody tr:last-child { border-bottom:none; }
+tbody td { padding:11px 14px; text-align:center; color:var(--texto-escuro); vertical-align:middle; }
+tbody td:nth-child(2) { text-align:left; padding-left:20px; font-weight:700; font-size:.92rem; }
+
+.pos-cell { font-family:'Black Ops One',sans-serif; font-size:1rem; width:64px; color:#bbb; }
+.row-1 { background:linear-gradient(90deg,rgba(245,166,35,.10) 0%,transparent 55%); }
+.row-1 .pos-cell { color:#b87a0a; }
+.row-2 { background:linear-gradient(90deg,rgba(170,170,170,.10) 0%,transparent 55%); }
+.row-2 .pos-cell { color:#888; }
+.row-3 { background:linear-gradient(90deg,rgba(192,120,64,.10) 0%,transparent 55%); }
+.row-3 .pos-cell { color:#a0622a; }
+
+.pts-masc  { font-family:'Black Ops One',sans-serif; font-size:1.3rem; color:var(--masc); }
+.pts-misto { font-family:'Black Ops One',sans-serif; font-size:1.3rem; color:var(--misto); }
+.pts-fem   { font-family:'Black Ops One',sans-serif; font-size:1.3rem; color:var(--fem); }
+
+.aprov-wrap { display:flex; align-items:center; gap:8px; justify-content:center; }
+.bar-bg { width:52px; height:7px; background:#e8e0d0; border-radius:4px; overflow:hidden; }
+.bar-masc  { height:100%; background:linear-gradient(90deg,var(--masc),var(--ceu-escuro)); border-radius:4px; transition:width .5s; }
+.bar-misto { height:100%; background:linear-gradient(90deg,var(--misto),#8a1a55); border-radius:4px; transition:width .5s; }
+.bar-fem   { height:100%; background:linear-gradient(90deg,var(--fem),#1a7a3e); border-radius:4px; transition:width .5s; }
+.aprov-pct { font-size:.74rem; font-weight:700; color:#aaa; min-width:34px; text-align:right; }
+
+.empty-state { padding:46px 24px; text-align:center; color:#ccc; font-size:.9rem; line-height:1.8; }
+.empty-state .bi { font-size:2.4rem; display:block; margin-bottom:8px; opacity:.4; }
+
+.nota-bar { padding:9px 20px; font-size:.74rem; color:rgba(0,0,0,.32); border-top:1px solid rgba(0,0,0,.05); background:rgba(0,0,0,.015); }
+
+footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,.28); }
+</style>
+</head>
+<body>
+
+<div class="sun"></div>
+<div class="ball-deco ball1"></div>
+<div class="ball-deco ball2"></div>
+<div class="fl fl1"></div><div class="fl fl2"></div>
+<div class="waves">
+  <div class="wave wave2"></div>
+  <div class="wave wave1"></div>
+</div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="eyebrow">⚽ Arena Cambuí FTV</div>
+    <h1>HS <span>FUTEVÔLEI</span></h1>
+    <div class="header-sub">Campeonato · Pontos Corridos</div>
+    <div class="regras-row">
+      <div class="rpill">⚽ Vitória <span class="v">1 PT</span></div>
+      <div class="rpill">🏐 Derrota <span class="v">0 PTS</span></div>
+    </div>
+  </div>
+
+  <div class="net-bar"></div>
+
+  <!-- LOADING STATE -->
+  <div id="loading-wrap" class="loading-wrap">
+    <div class="spinner"></div>
+    CARREGANDO DADOS...
+  </div>
+
+  <!-- MAIN (hidden until data loads) -->
+  <div id="main-content" style="display:none">
+
+    <!-- ERROR -->
+    <div id="error-wrap" class="error-wrap" style="display:none">
+      ⚠️ Não foi possível carregar os dados da planilha.<br>
+      Verifique se ela está publicada corretamente e tente atualizar.
+    </div>
+
+    <!-- TURMA SELECTOR -->
+    <div class="turma-selector">
+      <button class="turma-btn active" id="tbtn-t1" onclick="setTurma('t1')">
+        <span class="t-dia">☀️ Seg &amp; Qua</span>
+        <span class="t-hora">18H20</span>
+      </button>
+      <button class="turma-btn" id="tbtn-t2" onclick="setTurma('t2')">
+        <span class="t-dia">🌙 Seg &amp; Qua</span>
+        <span class="t-hora">19H40</span>
+      </button>
+      <button class="turma-btn" id="tbtn-t3" onclick="setTurma('t3')">
+        <span class="t-dia">⭐ Ter &amp; Qui</span>
+        <span class="t-hora">19H40</span>
+      </button>
+    </div>
+
+    <!-- CAT SELECTOR -->
+    <div class="cat-selector" id="cat-selector"></div>
+
+    <!-- CARD -->
+    <div class="card">
+      <div class="cat-badge">
+        <div class="badge-dot" id="badge-dot"></div>
+        <span id="badge-label"></span>
+      </div>
+
+      <div class="refresh-row">
+        <span class="last-update" id="last-update"></span>
+        <button class="refresh-btn" id="refresh-btn" onclick="fetchData()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          </svg>
+          ATUALIZAR
+        </button>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>POS</th><th>JOGADOR / DUPLA</th><th>V</th><th>D</th><th>J</th><th>PTS</th><th>APROV</th></tr>
+          </thead>
+          <tbody id="tbody-class"></tbody>
+        </table>
+      </div>
+      <div class="nota-bar">⚠️ Empate em pontos: desempate por maior número de vitórias.</div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <footer>HS Futevôlei · Sorocaba · Cambuí</footer>
+</div>
+
+<script>
+// ── CONFIGURAÇÃO ──────────────────────────────────────────────
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSMq92c4hL3OSPX1fgNrr8L2_64_lEtt9XT2w50Sqizy-s4zjsGp4QPK935e8Edz1df4ucacxYvwHZl/pub?gid=0&single=true&output=csv';
+
+// Turmas e categorias disponíveis
+const TURMAS = {
+  t1: {
+    label: 'Seg & Qua 18h20',
+    cats: [
+      { id:'masc',  label:'MASCULINO', icon:'👨', cor:'masc'  },
+      { id:'misto', label:'MISTO',     icon:'👫', cor:'misto' },
+    ]
+  },
+  t2: {
+    label: 'Seg & Qua 19h40',
+    cats: [
+      { id:'masc',  label:'MASCULINO', icon:'👨', cor:'masc'  },
+      { id:'misto', label:'MISTO',     icon:'👫', cor:'misto' },
+    ]
+  },
+  t3: {
+    label: 'Ter & Qui 19h40',
+    cats: [
+      { id:'fem', label:'FEMININO', icon:'👩', cor:'fem' },
+    ]
+  },
+};
+
+// ── STATE ─────────────────────────────────────────────────────
+let allDados = {}; // { t1: { masc: [...], misto: [...] }, ... }
+let curTurma = 't1';
+let curCat   = 'masc';
+
+// ── PARSE CSV ─────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\r/g,''));
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = lines[i].split(',').map(v => v.trim().replace(/\r/g,''));
+    if (vals.length < 2) continue;
+    const obj = {};
+    headers.forEach((h, idx) => obj[h] = vals[idx] || '');
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function buildDados(rows) {
+  // Reset
+  const dados = {};
+  Object.keys(TURMAS).forEach(tid => {
+    dados[tid] = {};
+    TURMAS[tid].cats.forEach(c => { dados[tid][c.id] = []; });
+  });
+
+  rows.forEach(r => {
+    const turma = (r['turma']||'').trim().toLowerCase();
+    const cat   = (r['categoria']||'').trim().toLowerCase();
+    const nome  = (r['nome']||'').trim();
+    const v     = parseInt(r['vitorias'])||0;
+    const d     = parseInt(r['derrotas'])||0;
+    if (!nome) return;
+    if (dados[turma] && dados[turma][cat] !== undefined) {
+      dados[turma][cat].push({ nome, v, d });
+    }
+  });
+  return dados;
+}
+
+// ── FETCH ─────────────────────────────────────────────────────
+async function fetchData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.classList.add('spinning');
+
+  try {
+    // Use a CORS proxy to avoid browser blocking
+    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(CSV_URL);
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    allDados = buildDados(rows);
+
+    // Update last-update time
+    const now = new Date();
+    document.getElementById('last-update').textContent =
+      'Atualizado às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    document.getElementById('error-wrap').style.display = 'none';
+    document.getElementById('loading-wrap').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+
+    renderAll();
+  } catch(e) {
+    console.error(e);
+    document.getElementById('loading-wrap').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    document.getElementById('error-wrap').style.display = 'block';
+  } finally {
+    btn.classList.remove('spinning');
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderAll() {
+  setTurma(curTurma, true);
+}
+
+function setTurma(tid, skipFetch) {
+  curTurma = tid;
+  document.querySelectorAll('.turma-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tbtn-' + tid).classList.add('active');
+  curCat = TURMAS[tid].cats[0].id;
+  renderCatSelector();
+  updateBadge();
+  renderClass();
+}
+
+function renderCatSelector() {
+  const sel  = document.getElementById('cat-selector');
+  const cats = TURMAS[curTurma].cats;
+  if (cats.length <= 1) { sel.style.display = 'none'; return; }
+  sel.style.display = 'flex';
+  sel.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c.id === curCat ? ' active-' + c.cor : '');
+    btn.innerHTML = `${c.icon} ${c.label}`;
+    btn.onclick = () => setCat(c.id);
+    sel.appendChild(btn);
+  });
+}
+
+function setCat(cid) {
+  curCat = cid;
+  renderCatSelector();
+  updateBadge();
+  renderClass();
+}
+
+function updateBadge() {
+  const catConf   = TURMAS[curTurma].cats.find(c => c.id === curCat);
+  const turmaConf = TURMAS[curTurma];
+  const colors = { masc:'#1a6faf', misto:'#c0407a', fem:'#2da85a' };
+  document.getElementById('badge-dot').style.background = colors[curCat];
+  document.getElementById('badge-label').style.color    = colors[curCat];
+  document.getElementById('badge-label').innerHTML =
+    `${catConf.icon} ${catConf.label} <span style="opacity:.35;margin:0 6px">·</span> ${turmaConf.label}`;
+}
+
+function dados() {
+  return (allDados[curTurma] && allDados[curTurma][curCat]) ? allDados[curTurma][curCat] : [];
+}
+
+function renderClass() {
+  const catConf = TURMAS[curTurma].cats.find(c => c.id === curCat);
+  const cor = catConf.cor;
+
+  let lista = dados().map(j => ({...j}));
+  lista.forEach(j => {
+    j.jogos = j.v + j.d;
+    j.pts   = j.v;           // VITÓRIA = 1 PT, DERROTA = 0
+    j.aprov = j.jogos ? j.v / j.jogos * 100 : 0;
+  });
+  lista.sort((a,b) => b.pts - a.pts || b.v - a.v || a.d - b.d);
+
+  const medals = {1:'🥇',2:'🥈',3:'🥉'};
+  const rClass  = {1:'row-1',2:'row-2',3:'row-3'};
+  const tb = document.getElementById('tbody-class');
+  tb.innerHTML = '';
+
+  if (!lista.length) {
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+      <span class="bi">${catConf.icon}</span>
+      Nenhum jogador encontrado para esta turma/categoria.<br>
+      Verifique os dados na planilha.
+    </div></td></tr>`;
+    return;
+  }
+
+  lista.forEach((j, idx) => {
+    const pos = idx + 1;
+    const posLabel = (medals[pos] || '') + ' ' + pos + 'º';
+    const tr = document.createElement('tr');
+    tr.className = rClass[pos] || '';
+    const bw = Math.round(j.aprov);
+    tr.innerHTML = `
+      <td class="pos-cell">${posLabel}</td>
+      <td>${esc(j.nome)}</td>
+      <td>${j.v}</td>
+      <td>${j.d}</td>
+      <td>${j.jogos}</td>
+      <td class="pts-${cor}">${j.pts}</td>
+      <td>
+        <div class="aprov-wrap">
+          <div class="bar-bg"><div class="bar-${cor}" style="width:${bw}%"></div></div>
+          <span class="aprov-pct">${j.jogos ? Math.round(j.aprov) + '%' : '—'}</span>
+        </div>
+      </td>`;
+    tb.appendChild(tr);
+  });
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+fetchData();
+</script>
+</body>
+</html>
