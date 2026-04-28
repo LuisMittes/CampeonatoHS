@@ -411,7 +411,8 @@ const TURMAS = {
   t3: {
     label: 'Ter & Qui 19h40',
     cats: [
-      { id:'fem', label:'FEMININO', icon:'👩', cor:'fem' },
+      { id:'fem',  label:'FEMININO - HITALLO', icon:'', cor:'fem'  },
+      { id:'fem2', label:'FEMININO - KAKÁ',    icon:'', cor:'misto' },
     ]
   },
 };
@@ -451,8 +452,10 @@ function buildDados(rows) {
     const v     = parseInt(r['vitorias'])||0;
     const d     = parseInt(r['derrotas'])||0;
     if (!nome) return;
-    if (dados[turma] && dados[turma][cat] !== undefined) {
-      dados[turma][cat].push({ nome, v, d });
+    // fem2 = Kaká's category in t3
+    const catKey = cat;
+    if (dados[turma] && dados[turma][catKey] !== undefined) {
+      dados[turma][catKey].push({ nome, v, d });
     }
   });
   return dados;
