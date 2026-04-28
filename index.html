@@ -313,6 +313,14 @@ footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:
         <span class="t-dia">⭐ Ter &amp; Qui</span>
         <span class="t-hora">19H40</span>
       </button>
+    <button class="turma-btn" id="tbtn-t5" onclick="setTurma('t5')">
+        <span class="t-dia">🌟 Terça</span>
+        <span class="t-hora">18H20</span>
+      </button>
+    <button class="turma-btn" id="tbtn-t6" onclick="setTurma('t6')">
+        <span class="t-dia">🌅 Seg &amp; Qua</span>
+        <span class="t-hora">7H</span>
+      </button>
     </div>
 
     <!-- CAT SELECTOR -->
@@ -354,7 +362,7 @@ footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:
   </a>
   <div class="sponsor-label">⭐ Patrocinador Oficial</div>
 
-  <footer>HS Futevôlei · Campinas · Cambuí</footer>
+  <footer>HS Futevôlei · Campinas · Cambuí<br><span style="font-size:.6rem;color:rgba(255,106,0,.35);letter-spacing:1.5px;">Criado por LCM Marketing</span></footer>
 </div>
 
 <script>
@@ -383,6 +391,19 @@ const TURMAS = {
     cats: [
       { id:'fem',  label:'FEMININO - HITALLO', icon:'', cor:'fem'  },
       { id:'fem2', label:'FEMININO - KAKÁ',    icon:'', cor:'misto' },
+    ]
+  },
+  t5: {
+    label: 'Terça 18h20',
+    cats: [
+      { id:'geral', label:'GERAL', icon:'', cor:'masc' },
+    ]
+  },
+  t6: {
+    label: 'Seg & Qua 7h',
+    cats: [
+      { id:'hit', label:'HITALLO', icon:'', cor:'fem'  },
+      { id:'kak', label:'KAKÁ',    icon:'', cor:'misto' },
     ]
   },
 };
