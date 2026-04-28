@@ -384,7 +384,7 @@ footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:
 
   </div><!-- /main-content -->
 
-  <footer>HS Futevôlei · Sorocaba · Cambuí</footer>
+  <footer>HS Futevôlei · Campinas · Cambuí</footer>
 </div>
 
 <script>
@@ -465,10 +465,17 @@ async function fetchData() {
 
   try {
     // Apps Script já tem CORS liberado — busca direto
-    const res = await fetch(CSV_URL, { cache: 'no-cache' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    let text = await res.text();
-    if (!text || !text.includes(',')) throw new Error('CSV inválido');
+    let text = null;
+    let erroDetalhado = '';
+    try {
+      const res = await fetch(CSV_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      text = await res.text();
+      if (!text || !text.includes(',')) throw new Error('Resposta inválida: ' + text.substring(0, 80));
+    } catch(e) {
+      erroDetalhado = e.message;
+      throw e;
+    }
     const rows = parseCSV(text);
     allDados = buildDados(rows);
 
@@ -486,6 +493,11 @@ async function fetchData() {
     console.error(e);
     document.getElementById('loading-wrap').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
+    document.getElementById('error-wrap').innerHTML = `
+      ⚠️ Não foi possível carregar os dados.<br>
+      <small style="opacity:.7">Erro: ${erroDetalhado || e.message}</small><br><br>
+      <small>Verifique se o Apps Script está implantado como <strong>"Qualquer pessoa"</strong>.</small>
+    `;
     document.getElementById('error-wrap').style.display = 'block';
   } finally {
     btn.classList.remove('spinning');
