@@ -318,7 +318,11 @@ footer { text-align:center; padding:22px 0 6px; font-size:.7rem; letter-spacing:
         <span class="t-hora">18H20</span>
       </button>
     <button class="turma-btn" id="tbtn-t6" onclick="setTurma('t6')">
-        <span class="t-dia">🌅 Seg &amp; Qua</span>
+        <span class="t-dia">🌅 Segunda · Kaká</span>
+        <span class="t-hora">7H</span>
+      </button>
+    <button class="turma-btn" id="tbtn-t7" onclick="setTurma('t7')">
+        <span class="t-dia">🌅 Quarta · Hitallo</span>
         <span class="t-hora">7H</span>
       </button>
     </div>
@@ -400,10 +404,17 @@ const TURMAS = {
     ]
   },
   t6: {
-    label: 'Seg & Qua 7h',
+    label: 'Segunda 7h · Kaká',
     cats: [
-      { id:'hit', label:'HITALLO', icon:'', cor:'fem'  },
-      { id:'kak', label:'KAKÁ',    icon:'', cor:'misto' },
+      { id:'masc', label:'MASCULINO', icon:'', cor:'masc' },
+      { id:'fem',  label:'FEMININO',  icon:'', cor:'fem'  },
+    ]
+  },
+  t7: {
+    label: 'Quarta 7h · Hitallo',
+    cats: [
+      { id:'masc', label:'MASCULINO', icon:'', cor:'masc' },
+      { id:'fem',  label:'FEMININO',  icon:'', cor:'fem'  },
     ]
   },
 };
